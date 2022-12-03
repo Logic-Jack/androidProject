@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.teamlink.teamactivityviewer.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.teamlink.teamactivityviewer.ui.clubs.ClubListFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_clubDetailFragment"
+            app:destination="@id/clubDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/clubDetailFragment"
+        android:name="com.teamlink.teamactivityviewer.ui.clubs.ClubDetailFragment"
+        android:label="fragment_club_details"
+        tools:layout="@layout/fragment_club_details" >
+        <action
+            android:id="@+id/action_clubDetailFragment_to_eventListFragment"
+            app:destination="@id/eventListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventListFragment"
+        android:name="com.teamlink.teamactivityviewer.ui.events.EventListFragment"
+        android:label="fragment_event_list"
+        tools:layout="@layout/fragment_event_list" >
+        <action
+            android:id="@+id/action_eventListFragment_to_eventDetailFragment"
+            app:destination="@id/eventDetailFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/eventDetailFragment"
+        android:name="com.teamlink.teamactivityviewer.ui.events.EventDetailFragment"
+        android:label="fragment_event_details"
+        tools:layout="@layout/fragment_event_details" />
+</navigation>
