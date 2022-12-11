@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.teamlink.teamactivityviewer.databinding.EventdataListItemBinding
 import com.teamlink.teamactivityviewer.databinding.PeriodListItemBinding
+import com.teamlink.teamactivityviewer.room.entity.CustomPeriodEntity
 import com.teamlink.teamactivityviewer.ui.data.model.CustomPeriod
 
-class PeriodListAdapter: ListAdapter<CustomPeriod, PeriodListAdapter.CustomPeriodViewHolder>(DiffCallback) {
+class PeriodListAdapter: ListAdapter<CustomPeriodEntity, PeriodListAdapter.CustomPeriodViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomPeriodViewHolder {
         return CustomPeriodViewHolder(
@@ -29,18 +30,18 @@ class PeriodListAdapter: ListAdapter<CustomPeriod, PeriodListAdapter.CustomPerio
     class CustomPeriodViewHolder(private var binding: PeriodListItemBinding)
         : RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item: CustomPeriod){
+        fun bind(item: CustomPeriodEntity){
             binding.itemDate.text = "${item.StartDate} - ${item.EndDate}"
         }
     }
 
     companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<CustomPeriod>() {
-            override fun areItemsTheSame(oldItem: CustomPeriod, newItem: CustomPeriod): Boolean {
+        private val DiffCallback = object : DiffUtil.ItemCallback<CustomPeriodEntity>() {
+            override fun areItemsTheSame(oldItem: CustomPeriodEntity, newItem: CustomPeriodEntity): Boolean {
                 return oldItem === newItem
             }
 
-            override fun areContentsTheSame(oldItem: CustomPeriod, newItem: CustomPeriod): Boolean {
+            override fun areContentsTheSame(oldItem: CustomPeriodEntity, newItem: CustomPeriodEntity): Boolean {
                 return oldItem.Id == newItem.Id
             }
         }

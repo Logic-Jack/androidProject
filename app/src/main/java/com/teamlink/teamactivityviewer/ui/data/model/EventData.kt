@@ -6,7 +6,6 @@ data class EventData(
     val Id: String,
     val Name: String,
     val Description: String,
-    val Periods: List<CustomPeriod>,
     val streetName: String,
     val HouseNumber: String,
     val City: String,
@@ -14,8 +13,10 @@ data class EventData(
     val Country: String
 )
 
+
 data class CustomPeriod(
     val Id: String,
     val StartDate: Date,
     val EndDate: Date
 )
+

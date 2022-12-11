@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.teamlink.teamactivityviewer.databinding.FragmentEventListBinding
+import com.teamlink.teamactivityviewer.room.Services.EventService
+import com.teamlink.teamactivityviewer.room.entity.EventEntity
 import com.teamlink.teamactivityviewer.services.DataProvider
 import com.teamlink.teamactivityviewer.ui.events.adapter.EventListAdapter
 
@@ -18,6 +22,8 @@ class EventListFragment: Fragment() {
 
     private var _binding: FragmentEventListBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var events: LiveData<List<EventEntity>>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +36,11 @@ class EventListFragment: Fragment() {
         _binding = FragmentEventListBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val bundle = Bundle()
+
+        var application = activity?.application
+        if (application != null){
+            events = EventService(application).all().asLiveData()
+        }
 
         var clubId = bundle.getString("clubId")
         if (clubId == null){
@@ -48,7 +59,7 @@ class EventListFragment: Fragment() {
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(this.context)
 
-        DataProvider.getInstance().events.observe(this.viewLifecycleOwner){
+        events.observe(this.viewLifecycleOwner){
             it.let {
                 adapter.submitList(it)
             }

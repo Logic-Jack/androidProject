@@ -1,13 +1,13 @@
 package com.teamlink.teamactivityviewer.ui.clubs
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.teamlink.teamactivityviewer.room.Services.ClubDaoService
+import com.teamlink.teamactivityviewer.room.entity.ClubEntity
 import com.teamlink.teamactivityviewer.services.ApiService
-import com.teamlink.teamactivityviewer.services.DataProvider
 import com.teamlink.teamactivityviewer.ui.data.LoginDataSource
 import com.teamlink.teamactivityviewer.ui.data.LoginRepository
 import com.teamlink.teamactivityviewer.ui.data.model.ClubData
@@ -15,36 +15,38 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.reflect.Type
 
-class ClubListViewModel : ViewModel() {
+class ClubListViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val dataProvider: DataProvider = DataProvider.getInstance()
+    private val application2 = application
+
+    var clubService = ClubDaoService(application2)
 
     fun onCreate(){
-        //DataProvider.getInstance().clubs.value = getClubs()
     }
 
     fun onStart(){
-        DataProvider.getInstance().clubs.value = getClubs()
+        getClubs()
     }
 
-    fun onViewVisible(){
-        DataProvider.getInstance().clubs.value = getClubs()
-    }
-
-    private fun getClubs(): List<ClubData>{
-        val user = LoginRepository(LoginDataSource()).user
+    private fun getClubs(){
+        val repo = LoginRepository(LoginDataSource(), application2)
+        repo.getUser()
+        val user = repo.user
         if (user?.userId != null && user.userId != ""){
             viewModelScope.launch(Dispatchers.IO) {
-                val response = ApiService().getClubsFromUser(user.userId!!)
+                val response = ApiService().getClubsFromUser(user.userId!!, user.token!!)
                 if (response != null){
-                    viewModelScope.launch(Dispatchers.Main) {
-                        val listType: Type = object: TypeToken<List<ClubData>>() {}.type
-                        DataProvider.getInstance().clubs.value = Gson().fromJson<List<ClubData>>(response, listType)
+                    clubService.deleteAll()
+                    val listType: Type = object: TypeToken<List<ClubData>>() {}.type
+                    val clubs = Gson().fromJson<List<ClubData>>(response, listType)
+
+                    for (club in clubs){
+                        val entity = ClubEntity(club.id, club.name, club.description, club.streetName, club.houseNumber, club.city, club.postalCode, club.country)
+
+                        clubService.insert(entity)
                     }
                 }
             }
         }
-
-        return emptyList()
     }
 }

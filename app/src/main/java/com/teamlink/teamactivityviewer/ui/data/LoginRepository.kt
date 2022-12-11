@@ -1,23 +1,21 @@
 package com.teamlink.teamactivityviewer.ui.data
 
+import android.app.Application
+import com.teamlink.teamactivityviewer.room.Services.UserService
+import com.teamlink.teamactivityviewer.room.entity.UserEntity
 import com.teamlink.teamactivityviewer.ui.data.model.LoggedInUser
 import okio.IOException
+import java.text.SimpleDateFormat
 import java.time.Instant
-import java.time.Instant.now
-import java.time.LocalDate.now
-import java.time.LocalDateTime
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
-import java.util.*
 
 /**
  * Class that requests authentication and user information from the remote data source and
  * maintains an in-memory cache of login status and user credentials information.
  */
 
-class LoginRepository(val dataSource: LoginDataSource) {
+class LoginRepository(val dataSource: LoginDataSource, application: Application) {
 
-    // in-memory cache of the loggedInUser object
+    var userService = UserService(application)
     var user: LoggedInUser? = null
         private set
 
@@ -25,15 +23,28 @@ class LoginRepository(val dataSource: LoginDataSource) {
         get() = user != null
 
     init {
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
-        user = null
+        //user = getUserLoggedIn()
+    }
+
+    fun getUser(){
+        user = getUserLoggedIn()
+    }
+
+    private fun getUserLoggedIn() : LoggedInUser? {
+        var user = userService.get()
+        if (user == null){
+            return null
+        }
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+
+        return LoggedInUser(user!!.succesfullLogin, user!!.userId, user!!.userName, user!!.token, format.parse(user.validTill), user.refreshToken)
     }
 
     fun logout() {
         val id: String? = user?.userId
         user = null
-        dataSource.logout(id)
+        userService.deleteAll()
+        // dataSource.logout(id)
     }
 
     fun login(username: String, password: String): Result<LoggedInUser>? {
@@ -83,8 +94,10 @@ class LoginRepository(val dataSource: LoginDataSource) {
     }
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {
-        this.user = loggedInUser
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
+        userService.deleteAll()
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        user = loggedInUser
+        var userEntity = UserEntity(loggedInUser.userId!!, loggedInUser.succesfullLogin, loggedInUser.userName, loggedInUser.token, format.format(loggedInUser.validTill), loggedInUser.refreshToken)
+        userService.insert(userEntity)
     }
 }

@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.teamlink.teamactivityviewer.databinding.EventdataListItemBinding
+import com.teamlink.teamactivityviewer.room.entity.EventEntity
 import com.teamlink.teamactivityviewer.ui.data.model.EventData
 
-class EventListAdapter(private val onClubClicked: (EventData) -> Unit)
-    : ListAdapter<EventData, EventListAdapter.EventDataViewHolder>(DiffCallback) {
+class EventListAdapter(private val onClubClicked: (EventEntity) -> Unit)
+    : ListAdapter<EventEntity, EventListAdapter.EventDataViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventDataViewHolder {
         return EventDataViewHolder(
@@ -32,19 +33,19 @@ class EventListAdapter(private val onClubClicked: (EventData) -> Unit)
     class EventDataViewHolder(private var binding: EventdataListItemBinding)
         : RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item: EventData){
+        fun bind(item: EventEntity){
             binding.itemName.text = item.Name
             binding.itemDesc.text = item.Description
         }
     }
 
     companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<EventData>() {
-            override fun areItemsTheSame(oldItem: EventData, newItem: EventData): Boolean {
+        private val DiffCallback = object : DiffUtil.ItemCallback<EventEntity>() {
+            override fun areItemsTheSame(oldItem: EventEntity, newItem: EventEntity): Boolean {
                 return oldItem === newItem
             }
 
-            override fun areContentsTheSame(oldItem: EventData, newItem: EventData): Boolean {
+            override fun areContentsTheSame(oldItem: EventEntity, newItem: EventEntity): Boolean {
                 return oldItem.Id == newItem.Id
             }
         }

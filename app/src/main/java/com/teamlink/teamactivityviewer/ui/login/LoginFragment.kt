@@ -34,7 +34,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = LoginViewModelFactory().create(LoginViewModel::class.java)
+        viewModel = LoginViewModelFactory(activity!!.application).create(LoginViewModel::class.java)
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         val root : View = binding.root
@@ -64,7 +64,7 @@ class LoginFragment : Fragment() {
 
             loading.visibility = View.GONE
             if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
+                showLoginFailed("Login failed!")
             }
 
             if (loginResult.success != null) {
@@ -74,11 +74,11 @@ class LoginFragment : Fragment() {
                     if (userId != null){
                         val bundle = Bundle()
                         bundle.putString("userId", userId)
-                        Fragment().findNavController().navigateUp()
+                        findNavController().navigateUp()
                     }
                 }
             }
-            // activity?.setResult(Activity.RESULT_OK)
+            //activity?.setResult(Activity.RESULT_OK)
 
             //Complete and destroy login activity once successful
             // activity?.finish()
@@ -115,17 +115,22 @@ class LoginFragment : Fragment() {
                 viewModel.login(username.text.toString(), password.text.toString())
             }
         }
+
+//        if (!root.hasFocus()){
+//            root.requestFocus()
+//        }
+
         return root
+    }
+
+    private fun showLoginFailed(errorString: String) {
+        Toast.makeText(activity?.applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {
         Toast.makeText(activity?.applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
-    }
 }
 /**
  * Extension function to simplify setting an afterTextChanged action to EditText components.

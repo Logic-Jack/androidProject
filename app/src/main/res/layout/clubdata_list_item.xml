@@ -21,9 +21,11 @@
         android:id="@+id/item_desc"
         style="@style/Widget.Inventory.ListItemTextView"
         android:layout_width="match_parent"
-        android:layout_marginStart="@dimen/margin_between_elements"
+        android:layout_marginStart="4dp"
         android:fontFamily="sans-serif-medium"
         app:layout_constraintBaseline_toBottomOf="@id/item_name"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="16dp"
         tools:text="fake" />
 
 

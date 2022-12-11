@@ -15,7 +15,7 @@ class MainNavActivity : AppCompatActivity() {
         binding = ActivityNavMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.beginTransaction()
-            .add(R.id.nav_host_fragment, ClubListFragment()).commit()
+//        supportFragmentManager.beginTransaction()
+//            .add(R.id.nav_host_fragment, ClubListFragment()).commit()
     }
 }

@@ -83,11 +83,11 @@ class ApiService {
         return null
     }
 
-    fun getClubsFromUser(userId: String): String?{
+    fun getClubsFromUser(userId: String, token: String): String?{
         var url = "$baseUrl/club/GetClubsForUser/$userId"
 
         try {
-            var response = get(url)
+            var response = getWithToken(url, token)
             if(response.isSuccessful){
                 return response.body?.string()
             }
@@ -98,11 +98,11 @@ class ApiService {
         return null;
     }
 
-    fun getEventsFromClub(clubId: String): String? {
+    fun getEventsFromClub(clubId: String, token: String): String? {
         var url = "$baseUrl/event/GetEventsFromClub/$clubId"
 
         try {
-            var response = get(url)
+            var response = getWithToken(url, token)
             if(response.isSuccessful){
                 return response.body?.string()
             }
@@ -137,6 +137,21 @@ class ApiService {
 
         try {
             return  client.newCall(request).execute()
+        }catch (ex: Exception){
+            throw ex
+        }
+    }
+
+    private fun getWithToken(url: String, token: String): Response{
+        var client = OkHttpClient().newBuilder().connectTimeout(20, TimeUnit.MILLISECONDS).build()
+
+        val request = Request.Builder()
+                .header("Authorization", "Bearer $token")
+                .url(url).get()
+                .build()
+
+        try {
+            return client.newCall(request).execute()
         }catch (ex: Exception){
             throw ex
         }

@@ -1,31 +1,46 @@
 package com.teamlink.teamactivityviewer.services
 
-import androidx.lifecycle.MutableLiveData
-import com.teamlink.teamactivityviewer.ui.data.model.ClubData
-import com.teamlink.teamactivityviewer.ui.data.model.EventData
+import android.app.Application
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.teamlink.teamactivityviewer.room.ClubDao
+import com.teamlink.teamactivityviewer.room.EventDao
+import com.teamlink.teamactivityviewer.room.UserDao
+import com.teamlink.teamactivityviewer.room.entity.ClubEntity
+import com.teamlink.teamactivityviewer.room.entity.CustomPeriodEntity
+import com.teamlink.teamactivityviewer.room.entity.EventEntity
+import com.teamlink.teamactivityviewer.room.entity.UserEntity
 
-class DataProvider private constructor() {
+@Database(entities = [ClubEntity::class, EventEntity::class, UserEntity::class, CustomPeriodEntity::class], version = 1)
+abstract class DataProvider : RoomDatabase() {
 
-    var clubs: MutableLiveData<List<ClubData>> = MutableLiveData<List<ClubData>>()
-    var events: MutableLiveData<List<EventData>> = MutableLiveData<List<EventData>>()
-
-    fun getEvent(eventId: String) : EventData? {
-        return events.value?.find { eventData -> eventData.Id == eventId }
-    }
-
-    fun getClub(clubId: String) : ClubData? {
-        return clubs.value?.find { clubData -> clubData.Id == clubId }
-    }
+    abstract fun clubDao(): ClubDao
+    abstract fun eventDao(): EventDao
+    abstract fun userDao(): UserDao
 
     companion object {
-        @Volatile
-        private lateinit var instance: DataProvider
 
-        fun getInstance(): DataProvider {
-            synchronized(this){
-                instance = DataProvider()
+        private var instance: DataProvider? = null
+
+        @Synchronized
+        fun getInstance(application: Application): DataProvider {
+            if (instance == null){
+                instance = Room.databaseBuilder(application.baseContext.applicationContext, DataProvider::class.java, "clubs_database")
+                    .fallbackToDestructiveMigration()
+                    .addCallback(test)
+                    .build()
             }
-            return instance
+            return instance!!
+        }
+
+        private val test = object: Callback(){
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+            }
         }
     }
+
+
 }

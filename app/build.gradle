@@ -1,8 +1,11 @@
 plugins {
     id 'com.android.application'
+    id 'kotlin-android'
     id 'org.jetbrains.kotlin.android'
     id("androidx.navigation.safeargs")
+    id 'kotlin-kapt'
 }
+
 
 android {
     namespace 'com.teamlink.teamactivityviewer'
@@ -38,6 +41,12 @@ android {
 
 dependencies {
 
+    implementation("androidx.room:room-runtime:2.4.3")
+    implementation("androidx.room:room-ktx:2.4.3")
+    annotationProcessor("androidx.room:room-compiler:2.4.3")
+    // To use Kotlin annotation processing tool (kapt)
+    kapt "androidx.room:room-compiler:2.4.3"
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
@@ -54,4 +63,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation 'com.android.support:cardview-v7:21.0.0-rc1'
+    implementation 'com.android.support:recyclerview-v7:21.0.0-rc1'
 }

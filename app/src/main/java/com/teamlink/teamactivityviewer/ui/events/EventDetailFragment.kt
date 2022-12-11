@@ -14,6 +14,8 @@ class EventDetailFragment: Fragment() {
 
     private var _binding: FragmentClubDetailsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var viewModel: EventDetailViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,8 +23,7 @@ class EventDetailFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val dashboardViewModel =
-            ViewModelProvider(this)[ClubDetailViewModel::class.java]
+        viewModel = ViewModelProvider(this)[EventDetailViewModel::class.java]
 
         _binding = FragmentClubDetailsBinding.inflate(inflater, container, false)
 
@@ -31,17 +32,18 @@ class EventDetailFragment: Fragment() {
         val id = bundle.getString("eventId")
 
         if (id != null){
-            val event = DataProvider.getInstance().getEvent(id)
+            val event = viewModel.eventService.getById(id)
             if (event != null){
                 binding.name.text = event.Name
                 binding.desc.text = event.Description
-                binding.streetName.text = "${event.streetName} ${event.HouseNumber}"
+                binding.streetName.text = "${event.StreetName} ${event.HouseNumber}"
                 binding.location.text = "${event.PostalCode} ${event.City}"
 
                 binding.eventButton.setOnClickListener {
 
                 }
             }
+
         }else{
         }
 
