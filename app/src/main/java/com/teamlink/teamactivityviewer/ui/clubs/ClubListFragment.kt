@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 
 class ClubListFragment : Fragment() {
 
+
     private var _binding: FragmentDashboardBinding? = null
     private var _viewModel: ClubListViewModel? = null
 
@@ -37,7 +38,6 @@ class ClubListFragment : Fragment() {
     ): View {
 
         _viewModel = ViewModelProvider(this)[ClubListViewModel::class.java]
-
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
         viewModel.onCreate()
@@ -45,9 +45,8 @@ class ClubListFragment : Fragment() {
         clubs = viewModel.clubService.all()
 
         val adapter = ClubListAdapter(){
-            val bundle = Bundle()
-            bundle.putString("clubId", it.Id)
-            val action = ClubListFragmentDirections.actionDashboardFragmentToClubDetailFragment()
+
+            val action = ClubListFragmentDirections.actionDashboardFragmentToClubDetailFragment(it.Id)
             root.findNavController().navigate(action)
         }
 
@@ -71,7 +70,7 @@ class ClubListFragment : Fragment() {
             if (application != null){
                 var repo = LoginRepository(LoginDataSource(), application)
                 // repo.logout()
-                repo.getUser()
+                // repo.getUser()
                 if (repo.user == null){
                     viewModel.viewModelScope.launch(Dispatchers.Main) {
                         val action = ClubListFragmentDirections.actionDashboardFragmentToLoginFragment()

@@ -1,32 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="48dp">
+    android:layout_height="wrap_content"
+    card_view:layout_constraintEnd_toEndOf="parent"
+    card_view:layout_constraintStart_toStartOf="parent"
+    card_view:cardBackgroundColor="@color/white"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardElevation="5dp"
+    card_view:cardUseCompatPadding="true">
 
-    <TextView
-        android:id="@+id/item_name"
-        style="@style/Widget.Inventory.ListItemTextView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_marginStart="@dimen/margin_between_elements"
-        android:fontFamily="sans-serif"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Cogs and Widgets" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/item_desc"
-        style="@style/Widget.Inventory.ListItemTextView"
-        android:layout_width="match_parent"
-        android:layout_marginStart="4dp"
-        android:fontFamily="sans-serif-medium"
-        app:layout_constraintBaseline_toBottomOf="@id/item_name"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="16dp"
-        tools:text="fake" />
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            android:text="Android Name"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
+        <TextView
+            android:id="@+id/item_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/item_name"
+            android:text="Android Version"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical">-->
+<!--        &lt;!&ndash;        <ImageView&ndash;&gt;-->
+<!--        &lt;!&ndash;            android:id="@+id/imageView"&ndash;&gt;-->
+<!--        &lt;!&ndash;            android:tag="image_tag"&ndash;&gt;-->
+<!--        &lt;!&ndash;            android:layout_width="0dp"&ndash;&gt;-->
+<!--        &lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--        &lt;!&ndash;            android:layout_margin="5dp"&ndash;&gt;-->
+<!--        &lt;!&ndash;            android:layout_weight="1"&ndash;&gt;-->
+<!--        &lt;!&ndash;            android:src="@drawable/ic_launcher"/>&ndash;&gt;-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/item_name"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:gravity="center"-->
+<!--            android:text="Android Name"-->
+<!--            android:textAppearance="?android:attr/textAppearanceLarge" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/item_desc"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:gravity="center"-->
+
+<!--            android:text="Android Version"-->
+<!--            android:textAppearance="?android:attr/textAppearanceMedium" />-->
+
+<!--    </LinearLayout>-->
+
+</androidx.cardview.widget.CardView>

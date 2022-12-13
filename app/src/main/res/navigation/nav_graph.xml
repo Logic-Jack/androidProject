@@ -20,7 +20,12 @@
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_clubDetailFragment"
-            app:destination="@id/clubDetailFragment" />
+            app:destination="@id/clubDetailFragment">
+        <argument
+            android:name="clubId"
+            app:argType="string"
+            app:nullable="true"/>
+        </action>
     </fragment>
     <fragment
         android:id="@+id/clubDetailFragment"
@@ -29,7 +34,12 @@
         tools:layout="@layout/fragment_club_details" >
         <action
             android:id="@+id/action_clubDetailFragment_to_eventListFragment"
-            app:destination="@id/eventListFragment" />
+            app:destination="@id/eventListFragment">
+        <argument
+            android:name="clubId"
+            app:argType="string"
+            app:nullable="true"/>
+        </action>
     </fragment>
     <fragment
         android:id="@+id/eventListFragment"
@@ -46,4 +56,13 @@
         android:name="com.teamlink.teamactivityviewer.ui.events.EventDetailFragment"
         android:label="fragment_event_details"
         tools:layout="@layout/fragment_event_details" />
+    <fragment
+        android:id="@+id/personalInfo"
+        android:name="com.teamlink.teamactivityviewer.ui.personal.PersonalInfoFragment"
+        android:label="fragment_personal_info"
+        tools:layout="@layout/fragment_personal_info" >
+        <action
+            android:id="@+id/action_personalInfo_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

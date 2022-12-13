@@ -10,6 +10,8 @@ import com.teamlink.teamactivityviewer.room.Services.EventService
 import com.teamlink.teamactivityviewer.room.entity.EventEntity
 import com.teamlink.teamactivityviewer.services.ApiService
 import com.teamlink.teamactivityviewer.services.DataProvider
+import com.teamlink.teamactivityviewer.ui.data.LoginDataSource
+import com.teamlink.teamactivityviewer.ui.data.LoginRepository
 import com.teamlink.teamactivityviewer.ui.data.model.ClubData
 import com.teamlink.teamactivityviewer.ui.data.model.EventData
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +19,7 @@ import kotlinx.coroutines.launch
 import java.lang.reflect.Type
 
 class EventListViewModel(application: Application): AndroidViewModel(application){
-
+    var application2 = application
     var eventService = EventService(application)
 
     fun onCreate(clubId: String){
@@ -26,7 +28,9 @@ class EventListViewModel(application: Application): AndroidViewModel(application
 
     private fun getEvents(clubId: String): List<ClubData>{
         viewModelScope.launch(Dispatchers.IO) {
-            val response = ApiService().getEventsFromClub(clubId)
+            val repo = LoginRepository(LoginDataSource(), application2)
+            // repo.getUser()
+            val response = ApiService().getEventsFromClub(clubId, repo.user?.token!!)
             if (response != null){
                 eventService.deleteAll()
                 val listType: Type = object: TypeToken<List<EventData>>() {}.type

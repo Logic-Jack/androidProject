@@ -37,12 +37,12 @@ class EventListFragment: Fragment() {
         val root: View = binding.root
         val bundle = Bundle()
 
-        var application = activity?.application
+        val application = activity?.application
         if (application != null){
             events = EventService(application).all().asLiveData()
         }
 
-        var clubId = bundle.getString("clubId")
+        val clubId = requireArguments().getString("clubId")
         if (clubId == null){
             showMessage("service not available")
         }
@@ -55,7 +55,7 @@ class EventListFragment: Fragment() {
             root.findNavController().navigate(action)
         }
 
-        var list = binding.list
+        val list = binding.list
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(this.context)
 

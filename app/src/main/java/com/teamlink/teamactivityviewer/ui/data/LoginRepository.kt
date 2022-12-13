@@ -16,7 +16,7 @@ import java.time.Instant
 class LoginRepository(val dataSource: LoginDataSource, application: Application) {
 
     var userService = UserService(application)
-    var user: LoggedInUser? = null
+    var user: LoggedInUser? = getUserLoggedIn()
         private set
 
     val isLoggedIn: Boolean
@@ -26,15 +26,32 @@ class LoginRepository(val dataSource: LoginDataSource, application: Application)
         //user = getUserLoggedIn()
     }
 
-    fun getUser(){
-        user = getUserLoggedIn()
+//    fun getUser() : LoggedInUser? {
+//        if (user == null){
+//            return getUserLoggedIn()
+//        }
+//
+//        return null
+//    }
+
+    fun getUserId(): String? {
+        if (user == null){
+            user = getLoggedInUser()
+        }
+
+        return user?.userId
+    }
+
+    fun getToken() : String? {
+        if (user == null){
+            user = getLoggedInUser()
+        }
+
+        return user?.token
     }
 
     private fun getUserLoggedIn() : LoggedInUser? {
-        var user = userService.get()
-        if (user == null){
-            return null
-        }
+        var user = userService.get() ?: return null
         val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
 
         return LoggedInUser(user!!.succesfullLogin, user!!.userId, user!!.userName, user!!.token, format.parse(user.validTill), user.refreshToken)
@@ -82,7 +99,7 @@ class LoginRepository(val dataSource: LoginDataSource, application: Application)
     }
 
     fun isUserLoggedIn() : Boolean {
-        if (user != null && user!!.succesfullLogin && Instant.now().isBefore(user!!.validTill.toInstant())){
+        if (user != null && user!!.succesfullLogin){
             return true
         }
 

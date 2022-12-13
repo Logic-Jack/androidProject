@@ -30,7 +30,7 @@ class ClubListViewModel(application: Application) : AndroidViewModel(application
 
     private fun getClubs(){
         val repo = LoginRepository(LoginDataSource(), application2)
-        repo.getUser()
+        // repo.getUser()
         val user = repo.user
         if (user?.userId != null && user.userId != ""){
             viewModelScope.launch(Dispatchers.IO) {

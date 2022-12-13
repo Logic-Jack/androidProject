@@ -17,4 +17,12 @@
     <string name="login_failed">"Login failed"</string>
     <string name="BaseUrl">https://finalwork-api.azurewebsites.net</string>
     <string name="events_button_name">Events</string>
+    <string name="view_detail_name">Name</string>
+    <string name="view_detail_description">Description</string>
+    <string name="view_details_address">Address</string>
+    <string name="view_event_subscribe">Subscribe</string>
+    <string name="view_detail_periods">Periods</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_location">My Location</string>
 </resources>

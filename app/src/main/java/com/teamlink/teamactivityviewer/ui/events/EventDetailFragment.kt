@@ -6,13 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.teamlink.teamactivityviewer.databinding.FragmentClubDetailsBinding
-import com.teamlink.teamactivityviewer.services.DataProvider
-import com.teamlink.teamactivityviewer.ui.clubs.ClubDetailViewModel
+import com.teamlink.teamactivityviewer.databinding.FragmentEventDetailsBinding
 
 class EventDetailFragment: Fragment() {
 
-    private var _binding: FragmentClubDetailsBinding? = null
+    private var _binding: FragmentEventDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: EventDetailViewModel
 
@@ -25,7 +23,7 @@ class EventDetailFragment: Fragment() {
 
         viewModel = ViewModelProvider(this)[EventDetailViewModel::class.java]
 
-        _binding = FragmentClubDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentEventDetailsBinding.inflate(inflater, container, false)
 
         val root: View = binding.root
         val bundle = Bundle()
@@ -39,7 +37,10 @@ class EventDetailFragment: Fragment() {
                 binding.streetName.text = "${event.StreetName} ${event.HouseNumber}"
                 binding.location.text = "${event.PostalCode} ${event.City}"
 
-                binding.eventButton.setOnClickListener {
+                binding.eventSubscribeButton.setOnClickListener {
+
+                }
+                binding.eventUnsubscribeButton.setOnClickListener {
 
                 }
             }
