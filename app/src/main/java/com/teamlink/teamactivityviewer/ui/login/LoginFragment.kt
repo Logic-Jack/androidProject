@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,17 +12,20 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.transition.Visibility
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.teamlink.teamactivityviewer.MainNavActivity
+import com.teamlink.teamactivityviewer.R
 import com.teamlink.teamactivityviewer.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     companion object {
@@ -34,8 +38,10 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = LoginViewModelFactory(activity!!.application).create(LoginViewModel::class.java)
+        viewModel = LoginViewModelFactory(requireActivity().application).create(LoginViewModel::class.java)
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
+        (activity as MainNavActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         val root : View = binding.root
 
@@ -44,6 +50,18 @@ class LoginFragment : Fragment() {
         val login = binding.login
         val loading = binding.loading
 
+        val navbar = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+        val back = activity?.onBackPressedDispatcher
+        val callback = object:OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showLoginFailed("please login")
+            }
+        }
+        back?.addCallback(viewLifecycleOwner, callback)
+
+        if (navbar != null){
+            navbar.visibility = View.GONE
+        }
 
         viewModel.loginFormState.observe(viewLifecycleOwner, Observer {
             val loginState = it ?: return@Observer
@@ -72,16 +90,10 @@ class LoginFragment : Fragment() {
                 if (context != null){
                     val userId = viewModel.getUser()
                     if (userId != null){
-                        val bundle = Bundle()
-                        bundle.putString("userId", userId)
-                        findNavController().navigateUp()
+                        findNavController().popBackStack()
                     }
                 }
             }
-            //activity?.setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-            // activity?.finish()
         })
 
         username.afterTextChanged {
@@ -116,25 +128,16 @@ class LoginFragment : Fragment() {
             }
         }
 
-//        if (!root.hasFocus()){
-//            root.requestFocus()
-//        }
-
         return root
     }
 
     private fun showLoginFailed(errorString: String) {
-        Toast.makeText(activity?.applicationContext, errorString, Toast.LENGTH_SHORT).show()
-    }
+        Toast.makeText(activity?.applicationContext, errorString, Toast.LENGTH_LONG).show()
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(activity?.applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 
 }
-/**
- * Extension function to simplify setting an afterTextChanged action to EditText components.
- */
+
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(editable: Editable?) {

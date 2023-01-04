@@ -6,13 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.teamlink.teamactivityviewer.ui.data.LoginDataSource
 import com.teamlink.teamactivityviewer.ui.data.LoginRepository
 
-/**
- * ViewModel provider factory to instantiate LoginViewModel.
- * Required given LoginViewModel has a non-empty constructor
- */
-class LoginViewModelFactory(application: Application) : ViewModelProvider.Factory {
-
-    val application = application
+class LoginViewModelFactory(val application: Application) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

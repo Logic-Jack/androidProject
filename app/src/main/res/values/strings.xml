@@ -25,4 +25,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="my_location">My Location</string>
+    <string name="home_image_description">home image</string>
+    <string name="title_activity_main_activitybals">MainActivitybals</string>
+    <string name="_title">Team APP</string>
+    <string name="welcome_text">Welcome to our club and event tracking app! We\'re excited to help you keep track of all the clubs and events you\'re interested in. With our app, you can easily see a list of all the clubs and events you\'re subscribed to in one place. You can also view details about each club or event, including their schedule, location, and any important information you need to know. We hope our app helps you stay organized and involved in all the things you\'re passionate about. Thanks for using our app!</string>
 </resources>

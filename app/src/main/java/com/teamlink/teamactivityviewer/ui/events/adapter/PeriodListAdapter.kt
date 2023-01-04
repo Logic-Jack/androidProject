@@ -10,7 +10,8 @@ import com.teamlink.teamactivityviewer.databinding.PeriodListItemBinding
 import com.teamlink.teamactivityviewer.room.entity.CustomPeriodEntity
 import com.teamlink.teamactivityviewer.ui.data.model.CustomPeriod
 
-class PeriodListAdapter: ListAdapter<CustomPeriodEntity, PeriodListAdapter.CustomPeriodViewHolder>(DiffCallback) {
+class PeriodListAdapter
+    : ListAdapter<CustomPeriodEntity, PeriodListAdapter.CustomPeriodViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomPeriodViewHolder {
         return CustomPeriodViewHolder(
@@ -31,7 +32,10 @@ class PeriodListAdapter: ListAdapter<CustomPeriodEntity, PeriodListAdapter.Custo
         : RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: CustomPeriodEntity){
-            binding.itemDate.text = "${item.StartDate} - ${item.EndDate}"
+            binding.startRow.text = "Start: "
+            binding.endRow.text = "End: "
+            binding.itemDateStart.text = item.StartDate
+            binding.itemDateEnd.text = item.EndDate
         }
     }
 

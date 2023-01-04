@@ -12,6 +12,7 @@ import com.teamlink.teamactivityviewer.room.entity.ClubEntity
 import com.teamlink.teamactivityviewer.room.entity.CustomPeriodEntity
 import com.teamlink.teamactivityviewer.room.entity.EventEntity
 import com.teamlink.teamactivityviewer.room.entity.UserEntity
+import com.teamlink.teamactivityviewer.room.periodDao
 
 @Database(entities = [ClubEntity::class, EventEntity::class, UserEntity::class, CustomPeriodEntity::class], version = 1)
 abstract class DataProvider : RoomDatabase() {
@@ -19,6 +20,7 @@ abstract class DataProvider : RoomDatabase() {
     abstract fun clubDao(): ClubDao
     abstract fun eventDao(): EventDao
     abstract fun userDao(): UserDao
+    abstract  fun periodDao(): periodDao
 
     companion object {
 
@@ -29,16 +31,12 @@ abstract class DataProvider : RoomDatabase() {
             if (instance == null){
                 instance = Room.databaseBuilder(application.baseContext.applicationContext, DataProvider::class.java, "clubs_database")
                     .fallbackToDestructiveMigration()
-                    .addCallback(test)
                     .build()
             }
             return instance!!
         }
 
         private val test = object: Callback(){
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-            }
         }
     }
 

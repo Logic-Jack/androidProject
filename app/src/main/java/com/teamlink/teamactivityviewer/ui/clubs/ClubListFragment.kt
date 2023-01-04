@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
@@ -11,6 +12,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.teamlink.teamactivityviewer.MainNavActivity
+import com.teamlink.teamactivityviewer.R
 import com.teamlink.teamactivityviewer.databinding.FragmentDashboardBinding
 import com.teamlink.teamactivityviewer.room.entity.ClubEntity
 import com.teamlink.teamactivityviewer.ui.clubs.adapter.ClubListAdapter
@@ -29,8 +33,6 @@ class ClubListFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel get() = _viewModel!!
 
-    private lateinit var clubs: Flow<List<ClubEntity>>
-
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -39,22 +41,28 @@ class ClubListFragment : Fragment() {
 
         _viewModel = ViewModelProvider(this)[ClubListViewModel::class.java]
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+
+        (activity as MainNavActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
         val root: View = binding.root
-        viewModel.onCreate()
 
-        clubs = viewModel.clubService.all()
+        val navbar = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
 
-        val adapter = ClubListAdapter(){
+        if (navbar != null){
+            navbar.visibility = View.VISIBLE
+        }
+
+        val adapter = ClubListAdapter {
 
             val action = ClubListFragmentDirections.actionDashboardFragmentToClubDetailFragment(it.Id)
             root.findNavController().navigate(action)
         }
 
-        var list = binding.list
+        val list = binding.list
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(this.context)
 
-        clubs.asLiveData().observe(this.viewLifecycleOwner){
+        viewModel.clubs.observe(this.viewLifecycleOwner){
             it.let {
                 adapter.submitList(it)
             }
@@ -66,12 +74,12 @@ class ClubListFragment : Fragment() {
     override fun onStart() {
 
         viewModel.viewModelScope.launch(Dispatchers.IO) {
-            var application = activity?.application
+            val application = activity?.application
             if (application != null){
-                var repo = LoginRepository(LoginDataSource(), application)
+                val repo = LoginRepository(LoginDataSource(), application)
                 // repo.logout()
-                // repo.getUser()
-                if (repo.user == null){
+                val user = repo.getUser()
+                if (user == null) {
                     viewModel.viewModelScope.launch(Dispatchers.Main) {
                         val action = ClubListFragmentDirections.actionDashboardFragmentToLoginFragment()
                         try {
@@ -80,9 +88,11 @@ class ClubListFragment : Fragment() {
                             throw ex
                         }
                     }
-                }else{
-                    viewModel.onStart()
                 }
+                else {
+                    viewModel.onStart(user)
+                }
+
             }
         }
 
@@ -92,5 +102,9 @@ class ClubListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showMessage(messageString: String) {
+        Toast.makeText(activity?.applicationContext, messageString, Toast.LENGTH_SHORT).show()
     }
 }

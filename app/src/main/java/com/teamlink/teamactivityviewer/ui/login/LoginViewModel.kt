@@ -23,11 +23,16 @@ class LoginViewModel(private val loginRepository: LoginRepository, application: 
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
+    init {
+        viewModelScope.launch(Dispatchers.IO){
+            loginRepository.getUser()
+        }
+    }
+
     fun login(username: String, password: String) {
 
-        // can be launched in a separate asynchronous job
         viewModelScope.launch(Dispatchers.IO) {
-            var result = loginRepository.login(username, password)
+            val result = loginRepository.login(username, password)
             viewModelScope.launch(Dispatchers.Main) {
                 if (result is Result.Success && result.data.succesfullLogin) {
                     _loginResult.value =
@@ -53,8 +58,8 @@ class LoginViewModel(private val loginRepository: LoginRepository, application: 
         }
     }
 
-    // A placeholder username validation check
-    private fun isUserNameValid(username: String): Boolean {
+
+    fun isUserNameValid(username: String): Boolean {
         return if (username.contains('@')) {
             Patterns.EMAIL_ADDRESS.matcher(username).matches()
         } else {
@@ -62,8 +67,7 @@ class LoginViewModel(private val loginRepository: LoginRepository, application: 
         }
     }
 
-    // A placeholder password validation check
-    private fun isPasswordValid(password: String): Boolean {
+    fun isPasswordValid(password: String): Boolean {
         return password.length > 5
     }
 }

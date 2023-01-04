@@ -3,10 +3,7 @@ package com.teamlink.teamactivityviewer.services
 import android.content.res.Resources
 import com.google.gson.Gson
 import com.teamlink.teamactivityviewer.R
-import com.teamlink.teamactivityviewer.ui.data.model.EventData
-import com.teamlink.teamactivityviewer.ui.data.model.LoggedInUser
-import com.teamlink.teamactivityviewer.ui.data.model.LoginRequest
-import com.teamlink.teamactivityviewer.ui.data.model.RefreshTokenRequest
+import com.teamlink.teamactivityviewer.ui.data.model.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.GlobalScope.coroutineContext
 import okhttp3.*
@@ -39,26 +36,18 @@ class ApiService {
         }finally {
             response.close()
         }
-        GlobalScope.launch(Dispatchers.Main) {  }
+
         return null
     }
 
-    fun logOut(userId: String?): Boolean {
+    fun logOut(userId: String?) {
         val url = "$baseUrl/Login/logout/$userId"
-        lateinit var response: Response
 
         try {
-            response = get(url)
-            if (response.isSuccessful){
-                return true
-            }
+            get(url)
         }catch (ex: Exception){
             throw ex
-        }finally {
-            response.close()
         }
-
-        return false
     }
 
     fun refreshToken(user: LoggedInUser) : String?{
@@ -83,26 +72,26 @@ class ApiService {
         return null
     }
 
-    fun getClubsFromUser(userId: String, token: String): String?{
-        var url = "$baseUrl/club/GetClubsForUser/$userId"
+    fun getUserInfo(userId: String, token: String) : String? {
+        val url = "$baseUrl/user/UserInfo/$userId"
 
         try {
-            var response = getWithToken(url, token)
-            if(response.isSuccessful){
+            val response = getWithToken(url, token)
+            if (response.isSuccessful){
                 return response.body?.string()
             }
-        }catch (ex: Exception){
+        }catch (ex: Exception) {
             throw ex
         }
 
-        return null;
+        return null
     }
 
-    fun getEventsFromClub(clubId: String, token: String): String? {
-        var url = "$baseUrl/event/GetEventsFromClub/$clubId"
+    fun getClubsFromUser(userId: String, token: String): String?{
+        val url = "$baseUrl/club/GetClubsForUser/$userId"
 
         try {
-            var response = getWithToken(url, token)
+            val response = getWithToken(url, token)
             if(response.isSuccessful){
                 return response.body?.string()
             }
@@ -113,12 +102,12 @@ class ApiService {
         return null
     }
 
-    fun getEventsFromUser(userId: String): String? {
-        var url = "$baseUrl/event/GetEventsFromUser/$userId"
+    fun getEventsFromClub(clubId: String, token: String): String? {
+        val url = "$baseUrl/event/GetEventsFromClub/$clubId"
 
         try {
-            var response = get(url)
-            if (response.isSuccessful){
+            val response = getWithToken(url, token)
+            if(response.isSuccessful){
                 return response.body?.string()
             }
         }catch (ex: Exception){
@@ -129,7 +118,7 @@ class ApiService {
     }
 
     private fun post(url: String, body: Any): Response {
-        val client = OkHttpClient()
+        val client = OkHttpClient().newBuilder().connectTimeout(20, TimeUnit.MILLISECONDS).build()
         val json = Gson().toJson(body)
         val bodyValue = json.toRequestBody(mediaTypeJson)
 
@@ -142,8 +131,25 @@ class ApiService {
         }
     }
 
+    fun getRandomImage(): ByteArray? {
+        val url = "https://picsum.photos/350/150"
+        lateinit var response: Response
+        try {
+            response = get(url)
+            if (response.isSuccessful){
+                return response.body?.bytes()
+            }
+        }catch (ex: Exception){
+            println("oeps")
+        }finally {
+            response.close()
+        }
+
+        return null
+    }
+
     private fun getWithToken(url: String, token: String): Response{
-        var client = OkHttpClient().newBuilder().connectTimeout(20, TimeUnit.MILLISECONDS).build()
+        val client = OkHttpClient().newBuilder().connectTimeout(20, TimeUnit.MILLISECONDS).build()
 
         val request = Request.Builder()
                 .header("Authorization", "Bearer $token")
@@ -158,7 +164,7 @@ class ApiService {
     }
 
     private fun get(url: String): Response{
-        var client = OkHttpClient().newBuilder().connectTimeout(20, TimeUnit.MILLISECONDS).build()
+        val client = OkHttpClient().newBuilder().connectTimeout(20, TimeUnit.MILLISECONDS).build()
 
         val request = Request.Builder().url(url).get().build()
 

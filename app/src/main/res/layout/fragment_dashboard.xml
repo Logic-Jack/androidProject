@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.clubs.ClubListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/grey_300"
         android:scrollbars="vertical"
-        android:background="@color/grey_300"/>
+        tools:listitem="@layout/clubdata_list_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

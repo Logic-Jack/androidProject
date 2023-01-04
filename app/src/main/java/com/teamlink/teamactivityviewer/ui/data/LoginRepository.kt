@@ -16,7 +16,7 @@ import java.time.Instant
 class LoginRepository(val dataSource: LoginDataSource, application: Application) {
 
     var userService = UserService(application)
-    var user: LoggedInUser? = getUserLoggedIn()
+    var user: LoggedInUser? = null
         private set
 
     val isLoggedIn: Boolean
@@ -26,13 +26,14 @@ class LoginRepository(val dataSource: LoginDataSource, application: Application)
         //user = getUserLoggedIn()
     }
 
-//    fun getUser() : LoggedInUser? {
-//        if (user == null){
-//            return getUserLoggedIn()
-//        }
-//
-//        return null
-//    }
+    @JvmName("getUser1")
+    fun getUser() : LoggedInUser? {
+        if (user == null){
+            user = return getUserLoggedIn()
+        }
+
+        return user
+    }
 
     fun getUserId(): String? {
         if (user == null){
@@ -53,8 +54,11 @@ class LoginRepository(val dataSource: LoginDataSource, application: Application)
     private fun getUserLoggedIn() : LoggedInUser? {
         var user = userService.get() ?: return null
         val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        if (user != null){
+            return LoggedInUser(user.succesfullLogin, user.userId, user.userName, user.token, format.parse(user.validTill), user.refreshToken)
+        }
 
-        return LoggedInUser(user!!.succesfullLogin, user!!.userId, user!!.userName, user!!.token, format.parse(user.validTill), user.refreshToken)
+        return null
     }
 
     fun logout() {
@@ -111,10 +115,12 @@ class LoginRepository(val dataSource: LoginDataSource, application: Application)
     }
 
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {
-        userService.deleteAll()
-        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        user = loggedInUser
-        var userEntity = UserEntity(loggedInUser.userId!!, loggedInUser.succesfullLogin, loggedInUser.userName, loggedInUser.token, format.format(loggedInUser.validTill), loggedInUser.refreshToken)
-        userService.insert(userEntity)
+        if(loggedInUser.succesfullLogin){
+            userService.deleteAll()
+            val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+            user = loggedInUser
+            val userEntity = UserEntity(loggedInUser.userId!!, loggedInUser.succesfullLogin, loggedInUser.userName, loggedInUser.token, format.format(loggedInUser.validTill), loggedInUser.refreshToken)
+            userService.insert(userEntity)
+        }
     }
 }

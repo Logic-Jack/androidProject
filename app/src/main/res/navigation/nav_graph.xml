@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/dashboardFragment">
+    app:startDestination="@id/navigation_home">
 
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.teamlink.teamactivityviewer.ui.login.LoginFragment"
-        android:label="fragment_login"
+        android:label="Login"
         tools:layout="@layout/fragment_login" />
     <fragment
-        android:id="@+id/dashboardFragment"
+        android:id="@+id/navigation_club"
         android:name="com.teamlink.teamactivityviewer.ui.clubs.ClubListFragment"
-        android:label="fragment_dashboard"
+        android:label="Clubs"
         tools:layout="@layout/fragment_dashboard" >
         <action
             android:id="@+id/action_dashboardFragment_to_loginFragment"
@@ -30,7 +30,7 @@
     <fragment
         android:id="@+id/clubDetailFragment"
         android:name="com.teamlink.teamactivityviewer.ui.clubs.ClubDetailFragment"
-        android:label="fragment_club_details"
+        android:label="Club Details"
         tools:layout="@layout/fragment_club_details" >
         <action
             android:id="@+id/action_clubDetailFragment_to_eventListFragment"
@@ -44,25 +44,33 @@
     <fragment
         android:id="@+id/eventListFragment"
         android:name="com.teamlink.teamactivityviewer.ui.events.EventListFragment"
-        android:label="fragment_event_list"
+        android:label="Events"
         tools:layout="@layout/fragment_event_list" >
         <action
             android:id="@+id/action_eventListFragment_to_eventDetailFragment"
-            app:destination="@id/eventDetailFragment"
-            />
+            app:destination="@id/eventDetailFragment">
+            <argument
+                android:name="eventId"
+                app:argType="string"
+                app:nullable="true"/>
+        </action>
     </fragment>
     <fragment
         android:id="@+id/eventDetailFragment"
         android:name="com.teamlink.teamactivityviewer.ui.events.EventDetailFragment"
-        android:label="fragment_event_details"
+        android:label="Event Details"
         tools:layout="@layout/fragment_event_details" />
     <fragment
-        android:id="@+id/personalInfo"
+        android:id="@+id/navigation_personalInfo"
         android:name="com.teamlink.teamactivityviewer.ui.personal.PersonalInfoFragment"
-        android:label="fragment_personal_info"
+        android:label="Profile"
         tools:layout="@layout/fragment_personal_info" >
         <action
             android:id="@+id/action_personalInfo_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.teamlink.teamactivityviewer.ui.home.HomeFragment"
+        android:label="Home" />
 </navigation>

@@ -1,19 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="38dp">
+    android:layout_height="wrap_content"
+    android:stretchColumns="1"
+    android:paddingHorizontal="15dp">
 
-    <TextView
-        android:id="@+id/item_date"
-        style="@style/Widget.Inventory.ListItemTextView"
-        android:layout_width="match_parent"
-        android:layout_marginStart="@dimen/margin_between_elements"
-        android:fontFamily="sans-serif"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Cogs and Widgets" />
+    <TableRow>
+                <TextView
+                    android:id="@+id/start_row"
+                    android:gravity="start"
+                    android:fontFamily="sans-serif"
+                    tools:text="start: " />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/item_date_start"
+                    android:gravity="end"
+                    android:fontFamily="sans-serif"
+                    tools:text="startdate" />
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:id="@+id/end_row"
+            android:gravity="start"
+            android:fontFamily="sans-serif"
+            tools:text="end: " />
+
+            <TextView
+                android:id="@+id/item_date_end"
+                android:gravity="end"
+                android:fontFamily="sans-serif"
+                tools:text="end date" />
+    </TableRow>
+</TableLayout>
+
+
+
+<!--<androidx.constraintlayout.widget.ConstraintLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content">-->
+
+<!--    &lt;!&ndash;    <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;        style="@style/Widget.Inventory.ListItemTextView"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_marginStart="@dimen/margin_between_elements"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:fontFamily="sans-serif"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintTop_toTopOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        tools:text="start:" />&ndash;&gt;-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;        android:id="@+id/item_date_start"&ndash;&gt;-->
+<!--&lt;!&ndash;        style="@style/Widget.Inventory.ListItemTextView"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_marginStart="@dimen/margin_between_elements"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:fontFamily="sans-serif"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintTop_toTopOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        tools:text="startdate" />&ndash;&gt;-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent">-->
+
+<!--        <TextView-->
+<!--            style="@style/Widget.Inventory.ListItemTextView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_marginStart="@dimen/margin_between_elements"-->
+<!--            android:fontFamily="sans-serif"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            tools:text="start:" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/item_date_start"-->
+<!--            style="@style/Widget.Inventory.ListItemTextView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_marginStart="@dimen/margin_between_elements"-->
+<!--            android:fontFamily="sans-serif"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            tools:text="startdate" />-->
+
+<!--    </LinearLayout>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/item_date_end"-->
+<!--        style="@style/Widget.Inventory.ListItemTextView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_marginStart="@dimen/margin_between_elements"-->
+<!--        android:fontFamily="sans-serif"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/item_date_start"-->
+<!--        tools:text="end date" />-->
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

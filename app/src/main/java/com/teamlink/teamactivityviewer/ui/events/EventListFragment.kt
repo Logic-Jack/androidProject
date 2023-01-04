@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.teamlink.teamactivityviewer.MainNavActivity
 import com.teamlink.teamactivityviewer.databinding.FragmentEventListBinding
 import com.teamlink.teamactivityviewer.room.Services.EventService
 import com.teamlink.teamactivityviewer.room.entity.EventEntity
@@ -22,36 +23,28 @@ class EventListFragment: Fragment() {
 
     private var _binding: FragmentEventListBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var events: LiveData<List<EventEntity>>
+    private lateinit var viewModel: EventListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
+        viewModel =
             ViewModelProvider(this)[EventListViewModel::class.java]
 
         _binding = FragmentEventListBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val bundle = Bundle()
 
-        val application = activity?.application
-        if (application != null){
-            events = EventService(application).all().asLiveData()
-        }
+        (activity as MainNavActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         val clubId = requireArguments().getString("clubId")
-        if (clubId == null){
-            showMessage("service not available")
+        if (clubId != null){
+            viewModel.onCreate(clubId)
         }
 
-        dashboardViewModel.onCreate(clubId!!)
-
-        val adapter = EventListAdapter(){
-            bundle.putString("eventId", it.Id)
-            val action = EventListFragmentDirections.actionEventListFragmentToEventDetailFragment()
+        val adapter = EventListAdapter {
+            val action = EventListFragmentDirections.actionEventListFragmentToEventDetailFragment(it.Id)
             root.findNavController().navigate(action)
         }
 
@@ -59,7 +52,7 @@ class EventListFragment: Fragment() {
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(this.context)
 
-        events.observe(this.viewLifecycleOwner){
+        viewModel.events.observe(this.viewLifecycleOwner){
             it.let {
                 adapter.submitList(it)
             }
@@ -68,7 +61,4 @@ class EventListFragment: Fragment() {
         return root
     }
 
-    private fun showMessage(messageString: String) {
-        Toast.makeText(activity?.applicationContext, messageString, Toast.LENGTH_SHORT).show()
-    }
 }

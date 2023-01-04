@@ -7,30 +7,44 @@
     android:layout_height="match_parent"
     tools:context=".ui.clubs.ClubDetailFragment"
     card_view:cardBackgroundColor="@color/white"
-    card_view:cardCornerRadius="10dp"
+    card_view:cardCornerRadius="15dp"
     card_view:cardElevation="5dp"
     card_view:cardUseCompatPadding="true"
+    android:paddingHorizontal="10dp"
     android:background="@color/grey_300">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginVertical="50dp">
+        android:layout_height="wrap_content"
+        card_view:layout_constraintBottom_toBottomOf="parent"
+        card_view:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="10dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:gravity="center"
-            >
+            android:orientation="vertical"
+            android:paddingVertical="20dp"
+            android:paddingHorizontal="10dp">
+
+            <ImageView
+                android:id="@+id/image_club"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ledenbeheer_sportclubs"
+                android:scaleType="fitXY"
+                />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:fontFamily="sans-serif-black"
-                android:textSize="20sp"
+                android:gravity="center"
                 android:text="@string/view_detail_name"
-                />
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
@@ -40,72 +54,69 @@
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent"
-                tools:text="name"/>
+                tools:text="name" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:fontFamily="sans-serif-black"
-                android:textSize="20sp"
-                android:text="@string/view_detail_description"
                 android:layout_marginTop="20dp"
-                />
+                android:fontFamily="sans-serif-black"
+                android:gravity="center"
+                android:text="@string/view_detail_description"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/desc"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 card_view:layout_constraintEnd_toEndOf="@id/name"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toBottomOf="@id/name"
-                android:gravity="center"
-                tools:text="description"/>
+                tools:text="description" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:fontFamily="sans-serif-black"
-                android:textSize="20sp"
-                android:text="@string/view_details_address"
                 android:layout_marginTop="20dp"
-                />
+                android:fontFamily="sans-serif-black"
+                android:gravity="center"
+                android:text="@string/view_details_address"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/street_name"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:gravity="center"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toBottomOf="@id/desc"
-                android:gravity="center"
-                tools:text="street name"/>
+                tools:text="street name" />
 
             <TextView
                 android:id="@+id/location"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:gravity="center"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toBottomOf="@id/street_name"
-                android:gravity="center"
-                tools:text="location"/>
+                tools:text="location" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginTop="20dp">
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
                 <Button
                     android:id="@+id/event_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="64dp"
-                    android:enabled="false"
                     android:text="@string/events_button_name"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintEnd_toEndOf="parent"

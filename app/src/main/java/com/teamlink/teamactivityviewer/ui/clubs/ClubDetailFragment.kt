@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.teamlink.teamactivityviewer.MainNavActivity
 import com.teamlink.teamactivityviewer.databinding.FragmentClubDetailsBinding
 import com.teamlink.teamactivityviewer.room.Services.ClubDaoService
 import com.teamlink.teamactivityviewer.services.DataProvider
@@ -35,25 +36,31 @@ class ClubDetailFragment: Fragment() {
         val root: View = binding.root
         val id = requireArguments().getString("clubId")
 
+        (activity as MainNavActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
         if (id != null){
             viewModel.viewModelScope.launch(Dispatchers.IO) {
                 val club = viewModel.getClub(id)
                 if (club != null){
-                    binding.name.text = club.Name
-                    binding.desc.text = club.Description
-                    binding.streetName.text = "${club.StreetName} ${club.HouseNumber}"
-                    binding.location.text = "${club.PostalCode} ${club.City}"
+                    val bitmap = viewModel.getrandomImage()
+                    viewModel.viewModelScope.launch(Dispatchers.Main){
+                        if (bitmap != null){
+                            binding.imageClub.setImageBitmap(bitmap)
+                        }
 
-                    binding.eventButton.setOnClickListener {
-                        val action = ClubDetailFragmentDirections.actionClubDetailFragmentToEventListFragment(club.Id)
-                        root.findNavController().navigate(action)
+                        binding.name.text = club.Name
+                        binding.desc.text = club.Description
+                        binding.streetName.text = "${club.StreetName} ${club.HouseNumber}"
+                        binding.location.text = "${club.PostalCode} ${club.City}"
 
+                        binding.eventButton.setOnClickListener {
+                            val action = ClubDetailFragmentDirections.actionClubDetailFragmentToEventListFragment(club.Id)
+                            root.findNavController().navigate(action)
+                        }
                     }
                 }
             }
-        }else{
         }
-
 
         return root
     }

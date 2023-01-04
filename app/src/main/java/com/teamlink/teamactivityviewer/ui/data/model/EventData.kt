@@ -3,20 +3,21 @@ package com.teamlink.teamactivityviewer.ui.data.model
 import java.util.*
 
 data class EventData(
-    val Id: String,
-    val Name: String,
-    val Description: String,
+    val id: String,
+    val name: String,
+    val description: String,
     val streetName: String,
-    val HouseNumber: String,
-    val City: String,
-    val PostalCode: String,
-    val Country: String
+    val houseNumber: String,
+    val city: String,
+    val postalCode: String,
+    val country: String,
+    val periods: List<CustomPeriod>
 )
 
 
 data class CustomPeriod(
-    val Id: String,
-    val StartDate: Date,
-    val EndDate: Date
+    val id: String,
+    val startDate: Date,
+    val endDate: Date
 )
 
